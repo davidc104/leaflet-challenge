@@ -50,16 +50,3 @@ L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/
 
 // Define darkmap
 L.layers({ "Earthquakes": earthquakes }).addTo(myMap);
-
-function getColor(d) {
-    return d < 1 ? "#FFA07A" :
-        d < 2 ? "#FA8072" :
-            d < 3 ? "#E9967A" :
-                d < 4 ? "#F08080" :
-                    d < 5 ? "#CD5C5C" :
-                        d < 6 ? "#DC143C" :
-                            d < 7 ? "#B22222" :
-                                d < 8 ? "#FF0000" :
-                                    "#8B0000";
-}
-
