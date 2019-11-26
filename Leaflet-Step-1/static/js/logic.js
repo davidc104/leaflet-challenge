@@ -40,16 +40,15 @@ function createFeatures(earthquakeData) {
             return L.circleMarker(latlng, geojsonMarkerOptions);
         }
     }).addTo(myMap);
+
+
+    // Define streetmap 
+    L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token={ accessToken }", {
+        id: "mapbox.streets",
+        accessToken: API_KEY,
+    }).addTo(myMap);
+
 }
-
-// Define streetmap 
-L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token={ accessToken }", {
-    id: "mapbox.streets",
-    accessToken: API_KEY,
-}).addTo(myMap);
-
-// Define darkmap
-L.layers({ "Earthquakes": earthquakes }).addTo(myMap);
 
 function getColor(d) {
     return d < 1 ? "#FFA07A" :
@@ -62,4 +61,27 @@ function getColor(d) {
                                 d < 8 ? "#FF0000" :
                                     "#8B0000";
 }
+
+// Create a legend to display information about our map
+var legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        labels = [];
+
+    div.innerHTML += 'Magnitude<br><hr>'
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '">&nbsp&nbsp&nbsp&nbsp</i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(myMap);
 
